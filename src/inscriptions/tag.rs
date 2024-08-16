@@ -29,40 +29,6 @@ impl Tag {
     [self as u8]
   }
 
-  pub(crate) fn append(self, builder: &mut script::Builder, value: &Option<Vec<u8>>) {
-    if let Some(value) = value {
-      let mut tmp = script::Builder::new();
-      mem::swap(&mut tmp, builder);
-
-      if self.chunked() {
-        for chunk in value.chunks(MAX_SCRIPT_ELEMENT_SIZE) {
-          tmp = tmp
-            .push_slice::<&script::PushBytes>(self.bytes().as_slice().try_into().unwrap())
-            .push_slice::<&script::PushBytes>(chunk.try_into().unwrap());
-        }
-      } else {
-        tmp = tmp
-          .push_slice::<&script::PushBytes>(self.bytes().as_slice().try_into().unwrap())
-          .push_slice::<&script::PushBytes>(value.as_slice().try_into().unwrap());
-      }
-
-      mem::swap(&mut tmp, builder);
-    }
-  }
-
-  pub(crate) fn append_array(self, builder: &mut script::Builder, values: &Vec<Vec<u8>>) {
-    let mut tmp = script::Builder::new();
-    mem::swap(&mut tmp, builder);
-
-    for value in values {
-      tmp = tmp
-        .push_slice::<&script::PushBytes>(self.bytes().as_slice().try_into().unwrap())
-        .push_slice::<&script::PushBytes>(value.as_slice().try_into().unwrap());
-    }
-
-    mem::swap(&mut tmp, builder);
-  }
-
   pub(crate) fn take(self, fields: &mut BTreeMap<&[u8], Vec<&[u8]>>) -> Option<Vec<u8>> {
     if self.chunked() {
       let value = fields.remove(self.bytes().as_slice())?;

@@ -603,21 +603,6 @@ mod tests {
       .unwrap()
   }
 
-  fn wallet(args: &str) -> (Settings, subcommand::wallet::WalletCommand) {
-    match Arguments::try_parse_from(args.split_whitespace()) {
-      Ok(arguments) => match arguments.subcommand {
-        Subcommand::Wallet(wallet) => (
-          Settings::from_options(arguments.options)
-            .or_defaults()
-            .unwrap(),
-          wallet,
-        ),
-        subcommand => panic!("unexpected subcommand: {subcommand:?}"),
-      },
-      Err(err) => panic!("error parsing arguments: {err}"),
-    }
-  }
-
   #[test]
   fn auth_missing_rpc_pass_is_an_error() {
     assert_eq!(
@@ -887,22 +872,6 @@ mod tests {
       .unwrap_err();
     assert_eq!(parse(&["--testnet"]).chain(), Chain::Testnet);
     assert_eq!(parse(&["-t"]).chain(), Chain::Testnet);
-  }
-
-  #[test]
-  fn wallet_flag_overrides_default_name() {
-    assert_eq!(wallet("ord wallet create").1.name, "ord");
-    assert_eq!(wallet("ord wallet --name foo create").1.name, "foo")
-  }
-
-  #[test]
-  fn uses_wallet_rpc() {
-    let (settings, _) = wallet("ord wallet --name foo balance");
-
-    assert_eq!(
-      settings.bitcoin_rpc_url(Some("foo".into())),
-      "127.0.0.1:8332/wallet/foo"
-    );
   }
 
   #[test]

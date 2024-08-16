@@ -96,38 +96,6 @@ fn from_stdin() {
 }
 
 #[test]
-fn from_core() {
-  let core = mockcore::spawn();
-  let ord = TestServer::spawn(&core);
-
-  create_wallet(&core, &ord);
-
-  core.mine_blocks(1);
-
-  let (_inscription, reveal) = inscribe(&core, &ord);
-
-  pretty_assert_eq!(
-    CommandBuilder::new(format!("decode --txid {reveal}"))
-      .core(&core)
-      .run_and_deserialize_output::<RawOutput>(),
-    RawOutput {
-      inscriptions: vec![Envelope {
-        payload: Inscription {
-          body: Some(b"FOO".into()),
-          content_type: Some(b"text/plain;charset=utf-8".into()),
-          ..default()
-        },
-        input: 0,
-        offset: 0,
-        pushnum: false,
-        stutter: false,
-      }],
-      runestone: None,
-    },
-  );
-}
-
-#[test]
 fn compact() {
   pretty_assert_eq!(
     CommandBuilder::new("decode --compact --file transaction.bin")

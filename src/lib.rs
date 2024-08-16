@@ -17,7 +17,6 @@ use {
     blocktime::Blocktime,
     decimal::Decimal,
     deserialize_from_str::DeserializeFromStr,
-    index::BitcoinCoreRpcResultExt,
     inscriptions::{
       inscription_id,
       media::{self, ImageRendering, Media},
@@ -26,22 +25,18 @@ use {
     into_usize::IntoUsize,
     representation::Representation,
     settings::Settings,
-    subcommand::{OutputFormat, Subcommand, SubcommandResult},
+    subcommand::{OutputFormat, Subcommand},
     tally::Tally,
   },
   anyhow::{anyhow, bail, ensure, Context, Error},
-  bip39::Mnemonic,
   bitcoin::{
     address::{Address, NetworkUnchecked},
-    blockdata::{
-      constants::{DIFFCHANGE_INTERVAL, MAX_SCRIPT_ELEMENT_SIZE, SUBSIDY_HALVING_INTERVAL},
-      locktime::absolute::LockTime,
-    },
+    blockdata::constants::{DIFFCHANGE_INTERVAL, SUBSIDY_HALVING_INTERVAL},
     consensus::{self, Decodable, Encodable},
     hash_types::{BlockHash, TxMerkleNode},
     hashes::Hash,
     script, Amount, Block, Network, OutPoint, Script, ScriptBuf, Sequence, Transaction, TxIn,
-    TxOut, Txid, Witness,
+    TxOut, Txid,
   },
   bitcoincore_rpc::{Client, RpcApi},
   chrono::{DateTime, TimeZone, Utc},
@@ -63,16 +58,15 @@ use {
   std::{
     backtrace::BacktraceStatus,
     cmp::{self, Reverse},
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet, VecDeque},
+    collections::{BTreeMap, HashSet, VecDeque},
     env,
     ffi::OsString,
     fmt::{self, Display, Formatter},
     fs,
     io::{self, Cursor, Read},
-    mem,
     net::ToSocketAddrs,
     path::{Path, PathBuf},
-    process::{self, Command, Stdio},
+    process::{self},
     str::FromStr,
     sync::{
       atomic::{self, AtomicBool},
@@ -92,7 +86,6 @@ pub use self::{
   inscriptions::{Envelope, Inscription, InscriptionId},
   object::Object,
   options::Options,
-  wallet::transaction_builder::{Target, TransactionBuilder},
 };
 
 #[cfg(test)]
@@ -124,63 +117,13 @@ pub mod settings;
 pub mod subcommand;
 mod tally;
 pub mod templates;
-pub mod wallet;
 
 type Result<T = (), E = Error> = std::result::Result<T, E>;
 type SnafuResult<T = (), E = SnafuError> = std::result::Result<T, E>;
 
-const TARGET_POSTAGE: Amount = Amount::from_sat(10_000);
-
 static SHUTTING_DOWN: AtomicBool = AtomicBool::new(false);
 static LISTENERS: Mutex<Vec<axum_server::Handle>> = Mutex::new(Vec::new());
 static INDEXER: Mutex<Option<thread::JoinHandle<()>>> = Mutex::new(None);
-
-#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-fn fund_raw_transaction(
-  client: &Client,
-  fee_rate: FeeRate,
-  unfunded_transaction: &Transaction,
-) -> Result<Vec<u8>> {
-  let mut buffer = Vec::new();
-
-  {
-    unfunded_transaction.version.consensus_encode(&mut buffer)?;
-    unfunded_transaction.input.consensus_encode(&mut buffer)?;
-    unfunded_transaction.output.consensus_encode(&mut buffer)?;
-    unfunded_transaction
-      .lock_time
-      .consensus_encode(&mut buffer)?;
-  }
-
-  Ok(
-    client
-      .fund_raw_transaction(
-        &buffer,
-        Some(&bitcoincore_rpc::json::FundRawTransactionOptions {
-          // NB. This is `fundrawtransaction`'s `feeRate`, which is fee per kvB
-          // and *not* fee per vB. So, we multiply the fee rate given by the user
-          // by 1000.
-          fee_rate: Some(Amount::from_sat((fee_rate.n() * 1000.0).ceil() as u64)),
-          change_position: Some(unfunded_transaction.output.len().try_into()?),
-          ..default()
-        }),
-        Some(false),
-      )
-      .map_err(|err| {
-        if matches!(
-          err,
-          bitcoincore_rpc::Error::JsonRpc(bitcoincore_rpc::jsonrpc::Error::Rpc(
-            bitcoincore_rpc::jsonrpc::error::RpcError { code: -6, .. }
-          ))
-        ) {
-          anyhow!("not enough cardinal utxos")
-        } else {
-          err.into()
-        }
-      })?
-      .hex,
-  )
-}
 
 pub fn timestamp(seconds: u64) -> DateTime<Utc> {
   Utc
