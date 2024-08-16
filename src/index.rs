@@ -15,11 +15,11 @@ use {
     subcommand::{find::FindRangeOutput, server::query},
     templates::StatusHtml,
   },
-  bitcoint4::block::Header,
   bitcoincore_rpc::{
     json::{GetBlockHeaderResult, GetBlockStatsResult},
     Client,
   },
+  bitcoint4::block::Header,
   chrono::SubsecRound,
   indicatif::{ProgressBar, ProgressStyle},
   log::log_enabled,
@@ -44,9 +44,6 @@ mod lot;
 mod reorg;
 mod rtx;
 mod updater;
-
-#[cfg(test)]
-pub(crate) mod testing;
 
 const SCHEMA_VERSION: u64 = 26;
 
