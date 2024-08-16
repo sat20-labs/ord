@@ -486,7 +486,6 @@ dependencies = [
  "bitcoin_hashes 0.12.0",
  "hex_lit",
  "secp256k1",
- "serde",
 ]
 
 [[package]]
@@ -510,6 +509,26 @@ dependencies = [
  "bitcoin-private",
  "serde",
 ]
+
+[[package]]
+name = "bitcoint4"
+version = "0.30.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4bfcd03defa4ebef065acad40c66c416d38e7a61360f40df3f567090f15adb34"
+dependencies = [
+ "bech32",
+ "bitcoin_hashes 0.12.0",
+ "bitcoint4-private",
+ "hex_lit",
+ "secp256k1",
+ "serde",
+]
+
+[[package]]
+name = "bitcoint4-private"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "365d68fd8c27697017d1de70b259a7a833984393c5cf6cc038c1ad0bd0a738eb"
 
 [[package]]
 name = "bitflags"
@@ -1922,12 +1941,12 @@ name = "mockcore"
 version = "0.0.1"
 dependencies = [
  "base64 0.22.1",
- "bitcoin",
+ "bitcoint4",
  "hex",
  "jsonrpc-core",
  "jsonrpc-derive",
  "jsonrpc-http-server",
- "ord-bitcoincore-rpc",
+ "ord-bitcoincoret4-rpc",
  "reqwest",
  "serde",
  "serde_json",
@@ -2193,7 +2212,7 @@ dependencies = [
  "axum-server",
  "base64 0.22.1",
  "bip39",
- "bitcoin",
+ "bitcoint4",
  "boilerplate",
  "brotli",
  "chrono",
@@ -2220,7 +2239,7 @@ dependencies = [
  "mockcore",
  "mp4",
  "nix 0.29.0",
- "ord-bitcoincore-rpc",
+ "ord-bitcoincoret4-rpc",
  "ordinals",
  "pretty_assertions",
  "redb",
@@ -2248,27 +2267,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "ord-bitcoincore-rpc"
+name = "ord-bitcoincoret4-rpc"
 version = "0.17.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16b622f69d68d7201d5186615978aca36ceb7e7c57d7771491d3e261c64ff4d8"
+checksum = "ec256ce978293d6d05fb62f38b24f69a5c85f4e73fd82c1873bdd2677f433d7a"
 dependencies = [
- "bitcoin-private",
+ "bitcoint4-private",
  "jsonrpc",
  "log",
- "ord-bitcoincore-rpc-json",
+ "ord-bitcoincoret4-rpc-json",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "ord-bitcoincore-rpc-json"
+name = "ord-bitcoincoret4-rpc-json"
 version = "0.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5bb35088f918c775bc27fa79e372d034892b216fb7900aeedd6e06654879ad33"
+checksum = "cbad0f757df8dd041634b9e09a9482910661eab9c23e6717f10031ec09f01f0d"
 dependencies = [
- "bitcoin",
- "bitcoin-private",
+ "bitcoint4",
+ "bitcoint4-private",
  "serde",
  "serde_json",
 ]
@@ -2277,7 +2296,7 @@ dependencies = [
 name = "ordinals"
 version = "0.0.9"
 dependencies = [
- "bitcoin",
+ "bitcoint4",
  "derive_more",
  "pretty_assertions",
  "serde",

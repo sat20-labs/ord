@@ -1,7 +1,7 @@
 #![no_main]
 
 use {
-  bitcoin::{
+  bitcoint4::{
     locktime, opcodes,
     script::{self, PushBytes},
     Transaction, TxOut,

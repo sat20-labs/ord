@@ -1,6 +1,6 @@
 use {
   super::*,
-  bitcoin::BlockHash,
+  bitcoint4::BlockHash,
   ord::{Envelope, Inscription},
 };
 

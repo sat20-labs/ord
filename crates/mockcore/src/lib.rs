@@ -2,7 +2,18 @@
 
 use {
   api::Api,
-  bitcoin::{
+  bitcoincore_rpc::json::{
+    Bip125Replaceable, CreateRawTransactionInput, Descriptor, EstimateMode, FeeRatePercentiles,
+    FinalizePsbtResult, GetBalancesResult, GetBalancesResultEntry, GetBlockHeaderResult,
+    GetBlockStatsResult, GetBlockchainInfoResult, GetDescriptorInfoResult, GetNetworkInfoResult,
+    GetRawTransactionResult, GetRawTransactionResultVout, GetRawTransactionResultVoutScriptPubKey,
+    GetTransactionResult, GetTransactionResultDetail, GetTransactionResultDetailCategory,
+    GetTxOutResult, GetWalletInfoResult, ImportDescriptors, ImportMultiResult,
+    ListDescriptorsResult, ListTransactionResult, ListUnspentResultEntry, ListWalletDirItem,
+    ListWalletDirResult, LoadWalletResult, SignRawTransactionInput, SignRawTransactionResult,
+    Timestamp, WalletProcessPsbtResult, WalletTxInfo,
+  },
+  bitcoint4::{
     address::{Address, NetworkUnchecked},
     amount::SignedAmount,
     block::Header,
@@ -15,17 +26,6 @@ use {
     pow::CompactTarget,
     Amount, Block, Network, OutPoint, ScriptBuf, Sequence, Transaction, TxIn, TxOut, Txid, Witness,
     Wtxid,
-  },
-  bitcoincore_rpc::json::{
-    Bip125Replaceable, CreateRawTransactionInput, Descriptor, EstimateMode, FeeRatePercentiles,
-    FinalizePsbtResult, GetBalancesResult, GetBalancesResultEntry, GetBlockHeaderResult,
-    GetBlockStatsResult, GetBlockchainInfoResult, GetDescriptorInfoResult, GetNetworkInfoResult,
-    GetRawTransactionResult, GetRawTransactionResultVout, GetRawTransactionResultVoutScriptPubKey,
-    GetTransactionResult, GetTransactionResultDetail, GetTransactionResultDetailCategory,
-    GetTxOutResult, GetWalletInfoResult, ImportDescriptors, ImportMultiResult,
-    ListDescriptorsResult, ListTransactionResult, ListUnspentResultEntry, ListWalletDirItem,
-    ListWalletDirResult, LoadWalletResult, SignRawTransactionInput, SignRawTransactionResult,
-    Timestamp, WalletProcessPsbtResult, WalletTxInfo,
   },
   jsonrpc_core::{IoHandler, Value},
   jsonrpc_http_server::{CloseHandle, ServerBuilder},
@@ -157,7 +157,7 @@ impl From<OutPoint> for JsonOutPoint {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FundRawTransactionOptions {
-  #[serde(with = "bitcoin::amount::serde::as_btc::opt")]
+  #[serde(with = "bitcoint4::amount::serde::as_btc::opt")]
   fee_rate: Option<Amount>,
   #[serde(skip_serializing_if = "Option::is_none")]
   change_position: Option<u32>,
@@ -168,7 +168,7 @@ pub struct FundRawTransactionOptions {
 pub struct FundRawTransactionResult {
   #[serde(with = "bitcoincore_rpc::json::serde_hex")]
   pub hex: Vec<u8>,
-  #[serde(with = "bitcoin::amount::serde::as_btc")]
+  #[serde(with = "bitcoint4::amount::serde::as_btc")]
   pub fee: Amount,
   #[serde(rename = "changepos")]
   pub change_position: i32,

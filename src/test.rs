@@ -1,6 +1,6 @@
 pub(crate) use {
   super::*,
-  bitcoin::{
+  bitcoint4::{
     blockdata::script::{PushBytes, PushBytesBuf},
     constants::COIN_VALUE,
     opcodes, WPubkeyHash,

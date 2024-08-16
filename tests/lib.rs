@@ -2,12 +2,12 @@
 
 use {
   self::{command_builder::CommandBuilder, expected::Expected, test_server::TestServer},
-  bitcoin::{
+  bitcoincore_rpc::bitcoincore_rpc_json::ListDescriptorsResult,
+  bitcoint4::{
     address::{Address, NetworkUnchecked},
     blockdata::constants::COIN_VALUE,
     Network, OutPoint, Sequence, Txid, Witness,
   },
-  bitcoincore_rpc::bitcoincore_rpc_json::ListDescriptorsResult,
   chrono::{DateTime, Utc},
   executable_path::executable_path,
   mockcore::TransactionTemplate,
@@ -84,18 +84,18 @@ fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
 }
 
 fn envelope(payload: &[&[u8]]) -> Witness {
-  let mut builder = bitcoin::script::Builder::new()
-    .push_opcode(bitcoin::opcodes::OP_FALSE)
-    .push_opcode(bitcoin::opcodes::all::OP_IF);
+  let mut builder = bitcoint4::script::Builder::new()
+    .push_opcode(bitcoint4::opcodes::OP_FALSE)
+    .push_opcode(bitcoint4::opcodes::all::OP_IF);
 
   for data in payload {
-    let mut buf = bitcoin::script::PushBytesBuf::new();
+    let mut buf = bitcoint4::script::PushBytesBuf::new();
     buf.extend_from_slice(data).unwrap();
     builder = builder.push_slice(buf);
   }
 
   let script = builder
-    .push_opcode(bitcoin::opcodes::all::OP_ENDIF)
+    .push_opcode(bitcoint4::opcodes::all::OP_ENDIF)
     .into_script();
 
   Witness::from_slice(&[script.into_bytes(), Vec::new()])

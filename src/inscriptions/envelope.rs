@@ -1,6 +1,6 @@
 use {
   super::*,
-  bitcoin::blockdata::{
+  bitcoint4::blockdata::{
     opcodes,
     script::{
       Instruction::{self, Op, PushBytes},

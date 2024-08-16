@@ -22,7 +22,7 @@ impl FromStr for Object {
       Address => Ok(Self::Address(s.parse()?)),
       Decimal | Degree | Percentile | Name => Ok(Self::Sat(s.parse()?)),
       Hash => Ok(Self::Hash(
-        bitcoin::hashes::sha256::Hash::from_str(s)?.to_byte_array(),
+        bitcoint4::hashes::sha256::Hash::from_str(s)?.to_byte_array(),
       )),
       InscriptionId => Ok(Self::InscriptionId(s.parse()?)),
       Integer => Ok(Self::Integer(s.parse()?)),

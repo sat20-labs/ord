@@ -21,7 +21,7 @@ impl PageContent for OutputHtml {
 mod tests {
   use {
     super::*,
-    bitcoin::{blockdata::script, PubkeyHash},
+    bitcoint4::{blockdata::script, PubkeyHash},
   };
 
   #[test]

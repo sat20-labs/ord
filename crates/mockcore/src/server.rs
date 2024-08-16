@@ -1,7 +1,7 @@
 use {
   super::*,
   base64::Engine,
-  bitcoin::{consensus::Decodable, psbt::Psbt, Witness},
+  bitcoint4::{consensus::Decodable, psbt::Psbt, Witness},
   std::io::Cursor,
 };
 
@@ -512,7 +512,7 @@ impl Api for Server {
     for tx_in in &tx.input {
       if let Some(lock_time) = tx_in.sequence.to_relative_lock_time() {
         match lock_time {
-          bitcoin::relative::LockTime::Blocks(blocks) => {
+          bitcoint4::relative::LockTime::Blocks(blocks) => {
             if state
               .txid_to_block_height
               .get(&tx_in.previous_output.txid)
@@ -523,7 +523,7 @@ impl Api for Server {
               panic!("input is locked");
             }
           }
-          bitcoin::relative::LockTime::Time(_) => {
+          bitcoint4::relative::LockTime::Time(_) => {
             panic!("time-based relative locktimes are not implemented")
           }
         }

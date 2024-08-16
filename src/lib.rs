@@ -29,7 +29,7 @@ use {
     tally::Tally,
   },
   anyhow::{anyhow, bail, ensure, Context, Error},
-  bitcoin::{
+  bitcoint4::{
     address::{Address, NetworkUnchecked},
     blockdata::constants::{DIFFCHANGE_INTERVAL, SUBSIDY_HALVING_INTERVAL},
     consensus::{self, Decodable, Encodable},
@@ -131,7 +131,7 @@ pub fn timestamp(seconds: u64) -> DateTime<Utc> {
     .unwrap()
 }
 
-fn target_as_block_hash(target: bitcoin::Target) -> BlockHash {
+fn target_as_block_hash(target: bitcoint4::Target) -> BlockHash {
   BlockHash::from_raw_hash(Hash::from_byte_array(target.to_le_bytes()))
 }
 

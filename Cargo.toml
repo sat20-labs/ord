@@ -24,7 +24,7 @@ axum = { version = "0.6.1", features = ["http2"] }
 axum-server = "0.5.0"
 base64 = "0.22.0"
 bip39 = "2.0.0"
-bitcoin = { version = "0.30.1", features = ["rand"] }
+bitcoint4 = { version = "0.30.3", features = ["rand"] }
 boilerplate = { version = "1.0.0", features = ["axum"] }
 brotli = "6.0.0"
 chrono = { version = "0.4.19", features = ["serde"] }
@@ -47,7 +47,7 @@ mime = "0.3.16"
 mime_guess = "2.0.4"
 miniscript = "10.0.0"
 mp4 = "0.14.0"
-ord-bitcoincore-rpc = "0.17.2"
+ord-bitcoincoret4-rpc = "0.17.2"
 ordinals = { version = "0.0.9", path = "crates/ordinals" }
 redb = "2.0.0"
 regex = "1.6.0"
@@ -67,8 +67,14 @@ sysinfo = "0.30.3"
 tempfile = "3.2.0"
 tokio = { version = "1.17.0", features = ["rt-multi-thread"] }
 tokio-stream = "0.1.9"
-tokio-util = {version = "0.7.3", features = ["compat"] }
-tower-http = { version = "0.4.0", features = ["auth", "compression-br", "compression-gzip", "cors", "set-header"] }
+tokio-util = { version = "0.7.3", features = ["compat"] }
+tower-http = { version = "0.4.0", features = [
+    "auth",
+    "compression-br",
+    "compression-gzip",
+    "cors",
+    "set-header",
+] }
 urlencoding = "2.1.3"
 
 [dev-dependencies]

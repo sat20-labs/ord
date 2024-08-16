@@ -1,4 +1,4 @@
-use {super::*, bitcoin::transaction::ParseOutPointError};
+use {super::*, bitcoint4::transaction::ParseOutPointError};
 
 /// A satpoint identifies the location of a sat in an output.
 ///
@@ -43,7 +43,7 @@ impl Encodable for SatPoint {
 impl Decodable for SatPoint {
   fn consensus_decode<D: io::Read + ?Sized>(
     d: &mut D,
-  ) -> Result<Self, bitcoin::consensus::encode::Error> {
+  ) -> Result<Self, bitcoint4::consensus::encode::Error> {
     Ok(SatPoint {
       outpoint: Decodable::consensus_decode(d)?,
       offset: Decodable::consensus_decode(d)?,

@@ -2,7 +2,7 @@
 
 use {
   arbitrary::Arbitrary,
-  bitcoin::{
+  bitcoint4::{
     address::{Address, NetworkUnchecked},
     Amount, OutPoint, TxOut,
   },

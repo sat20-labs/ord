@@ -1,6 +1,6 @@
 use {
   super::*,
-  bitcoin::{
+  bitcoint4::{
     absolute::LockTime, consensus::Encodable, opcodes, script, ScriptBuf, Sequence, Transaction,
     TxIn, TxOut, Witness,
   },
