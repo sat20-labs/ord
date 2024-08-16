@@ -162,6 +162,7 @@ impl Settings {
         .then_some(Chain::Signet)
         .or(options.regtest.then_some(Chain::Regtest))
         .or(options.testnet.then_some(Chain::Testnet))
+        .or(options.testnet4.then_some(Chain::Testnet4))
         .or(options.chain_argument),
       commit_interval: options.commit_interval,
       config: options.config,
@@ -446,6 +447,7 @@ impl Settings {
             "test" => Chain::Testnet,
             "regtest" => Chain::Regtest,
             "signet" => Chain::Signet,
+            "testnet4" => Chain::Testnet4,
             other => bail!("Bitcoin RPC server on unknown chain: {other}"),
           }
         }

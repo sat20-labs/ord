@@ -10,6 +10,7 @@ pub enum Chain {
   Testnet,
   Signet,
   Regtest,
+  Testnet4,
 }
 
 impl Chain {
@@ -23,13 +24,14 @@ impl Chain {
       Self::Regtest => 18443,
       Self::Signet => 38332,
       Self::Testnet => 18332,
+      Self::Testnet4 => 48322,
     }
   }
 
   pub(crate) fn inscription_content_size_limit(self) -> Option<usize> {
     match self {
       Self::Mainnet | Self::Regtest => None,
-      Self::Testnet | Self::Signet => Some(1024),
+      Self::Testnet | Self::Signet | Self::Testnet4 => Some(1024),
     }
   }
 
@@ -39,6 +41,7 @@ impl Chain {
       Self::Regtest => 0,
       Self::Signet => 112402,
       Self::Testnet => 2413343,
+      Self::Testnet4 => 27228,
     }
   }
 
@@ -52,6 +55,7 @@ impl Chain {
       Self::Regtest => 110,
       Self::Signet => 175392,
       Self::Testnet => 2544192,
+      Self::Testnet4 => 0,
     }
   }
 
@@ -79,6 +83,7 @@ impl Chain {
       Self::Testnet => data_dir.as_ref().join("testnet3"),
       Self::Signet => data_dir.as_ref().join("signet"),
       Self::Regtest => data_dir.as_ref().join("regtest"),
+      Self::Testnet4 => data_dir.as_ref().join("testnet4"),
     }
   }
 }
@@ -90,6 +95,7 @@ impl From<Chain> for Network {
       Chain::Testnet => Network::Testnet,
       Chain::Signet => Network::Signet,
       Chain::Regtest => Network::Regtest,
+      Chain::Testnet4 => Network::Testnet4,
     }
   }
 }
@@ -104,6 +110,7 @@ impl Display for Chain {
         Self::Regtest => "regtest",
         Self::Signet => "signet",
         Self::Testnet => "testnet",
+        Self::Testnet4 => "testnet4",
       }
     )
   }
@@ -118,6 +125,7 @@ impl FromStr for Chain {
       "regtest" => Ok(Self::Regtest),
       "signet" => Ok(Self::Signet),
       "testnet" => Ok(Self::Testnet),
+      "testnet4" => Ok(Self::Testnet4),
       _ => bail!("invalid chain `{s}`"),
     }
   }
@@ -133,6 +141,7 @@ mod tests {
     assert_eq!("regtest".parse::<Chain>().unwrap(), Chain::Regtest);
     assert_eq!("signet".parse::<Chain>().unwrap(), Chain::Signet);
     assert_eq!("testnet".parse::<Chain>().unwrap(), Chain::Testnet);
+    assert_eq!("testnet4".parse::<Chain>().unwrap(), Chain::Testnet4);
     assert_eq!(
       "foo".parse::<Chain>().unwrap_err().to_string(),
       "invalid chain `foo`"
