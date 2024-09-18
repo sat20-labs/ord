@@ -851,8 +851,15 @@ impl Server {
 
       let runes_balances = index.get_aggregated_rune_balances_for_outputs(&outputs)?;
 
+      let address_info = api::AddressInfo {
+        address: address.clone(),
+        outputs: outputs.clone(),
+        inscriptions: inscriptions.clone(),
+        sat_balance,
+        runes_balances: runes_balances.clone(),
+      };
       Ok(if accept_json {
-        Json(outputs).into_response()
+        Json(address_info).into_response()
       } else {
         AddressHtml {
           address,
