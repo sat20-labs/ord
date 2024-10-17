@@ -512,9 +512,9 @@ dependencies = [
 
 [[package]]
 name = "bitcoint4"
-version = "0.30.3"
+version = "0.30.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4bfcd03defa4ebef065acad40c66c416d38e7a61360f40df3f567090f15adb34"
+checksum = "8510baac5a436a50092b81a7d52316ed95be5887549dad4b775a75526d062e5e"
 dependencies = [
  "bech32",
  "bitcoin_hashes 0.12.0",
