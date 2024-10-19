@@ -71,7 +71,6 @@ impl Api for Server {
       automatic_pruning: None,
       prune_target_size: None,
       softforks: HashMap::new(),
-      warnings: String::new(),
     })
   }
 

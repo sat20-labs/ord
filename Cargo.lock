@@ -2268,9 +2268,9 @@ dependencies = [
 
 [[package]]
 name = "ord-bitcoincoret4-rpc"
-version = "0.17.2"
+version = "0.17.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec256ce978293d6d05fb62f38b24f69a5c85f4e73fd82c1873bdd2677f433d7a"
+checksum = "4eb5986560d3b6e9754f18c493fc374fc92b91bbc0032e63a67d2b81cf8fff41"
 dependencies = [
  "bitcoint4-private",
  "jsonrpc",
@@ -2282,9 +2282,9 @@ dependencies = [
 
 [[package]]
 name = "ord-bitcoincoret4-rpc-json"
-version = "0.17.1"
+version = "0.17.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbad0f757df8dd041634b9e09a9482910661eab9c23e6717f10031ec09f01f0d"
+checksum = "585d76aad3fe28698cea2e8ad3269cfa200039e26b6ea5df2a86fb02ad34fb1c"
 dependencies = [
  "bitcoint4",
  "bitcoint4-private",
